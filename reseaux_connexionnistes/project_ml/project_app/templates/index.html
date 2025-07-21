@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord - Précision du Modèle</title>
+    <style>
+        /* --- Styles généraux --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background: #0066cc;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        /* --- Container Grid --- */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+        }
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.4rem;
+            color: #0066cc;
+        }
+
+        /* --- Styles images et canvas --- */
+        .card img,
+        .card canvas {
+            display: block;
+            max-width: 100%;
+            margin: 1rem auto;
+            border-radius: 8px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tableau de bord - Évaluation du modèle</h1>
+    </header>
+    <div class="container">
+        <!-- Matrice de confusion -->
+        <div class="card">
+            <h2>Matrice de confusion</h2>
+            <!-- Remplacez src par le chemin de votre image PNG -->
+            <img src="{% url 'confusion_png' %}" alt="Matrice de confusion">
+            <!-- <img src="{% static 'images/confusion_matrix.png' %}" alt="Matrice de confusion"> -->
+            <!-- <img src="data:image/png;base64,{{ graph }}" /> -->
+        </div>
+
+        <!-- Évolution des poids -->
+        <div class="card">
+            <h2>Évolution des poids</h2>
+            <!-- Canvas pour graphique Chart.js -->
+            <canvas id="weightChart" width="500" height="400"></canvas>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 MultiMarket Sénégal - Tous droits réservés
+    </footer>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Exemple de données (à remplacer dynamiquement via Django)
+        const labels = {{ weight_labels|default:'["Époch1", "Époch2", "Époch3"]'|safe }};
+        const data = {{ weight_values|default:'[0.35, 0.20, 0.10]'|safe }};
+
+        const ctx = document.getElementById('weightChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Valeur moyenne des poids',
+                    data: data,
+                    tension: 0.4,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: { title: { display: true, text: 'Épochs' } },
+                    y: { title: { display: true, text: 'Poids' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

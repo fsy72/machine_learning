@@ -1,0 +1,149 @@
+Parfait, utiliser **Django** te permet d’intégrer ton modèle de toxicité dans une vraie application web structurée ! Voici **étape par étape** comment créer une interface Django pour charger les données et tester le modèle :
+
+---
+
+## ✅ Objectif
+
+Créer une app Django qui permet à l'utilisateur d'entrer les **6 descripteurs** et d'obtenir une **prédiction de toxicité** en réponse.
+
+---
+
+## 🧱 Structure du projet
+
+```
+qsar_project/
+│
+├── qsar_app/
+│   ├── views.py
+│   ├── urls.py
+│   ├── templates/
+│   │   └── index.html
+│   └── ...
+├── qsar_project/
+│   └── settings.py ...
+├── manage.py
+├── Model_Entrainer.h5
+├── Model_Entrainer.pkl
+```
+
+---
+
+## 1️⃣ Créer le projet et l’app
+
+```bash
+django-admin startproject qsar_project
+cd qsar_project
+python manage.py startapp qsar_app
+```
+
+Ajoute `"qsar_app"` dans `INSTALLED_APPS` (dans `settings.py`).
+
+---
+
+## 2️⃣ Charger le modèle dans `views.py`
+
+```python
+# qsar_app/views.py
+from django.shortcuts import render
+from keras.models import load_model
+import joblib
+import numpy as np
+
+# Charger modèle et scaler une seule fois
+model = load_model("Model_Entrainer.h5")
+scaler = joblib.load("Model_Entrainer.pkl")
+
+def index(request):
+    result = None
+    if request.method == "POST":
+        try:
+            # Lire les 6 valeurs du formulaire
+            features = [float(request.POST[f'f{i}']) for i in range(1, 7)]
+            X_scaled = scaler.transform([features])
+            prediction = model.predict(X_scaled)[0][0]
+            result = {
+                "classe": "Toxique" if prediction >= 0.5 else "Non toxique",
+                "score": round(float(prediction), 2)
+            }
+        except Exception as e:
+            result = {"error": f"Erreur : {e}"}
+    return render(request, "index.html", {"result": result})
+```
+
+---
+
+## 3️⃣ Créer un formulaire HTML dans `qsar_app/templates/index.html`
+
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>QSAR Toxicité</title>
+</head>
+<body>
+    <h1>Prédiction de la toxicité</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for i in "123456" %}
+            <label for="f{{ i }}">Descripteur {{ i }} :</label>
+            <input type="number" step="any" name="f{{ i }}" required><br>
+        {% endfor %}
+        <br>
+        <input type="submit" value="Prédire">
+    </form>
+
+    {% if result %}
+        <h2>Résultat : {{ result.classe }} (score : {{ result.score }})</h2>
+    {% endif %}
+</body>
+</html>
+```
+
+---
+
+## 4️⃣ Ajouter `urls.py` dans l’app
+
+```python
+# qsar_app/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.index, name='index'),
+]
+```
+
+Et l’inclure dans le `urls.py` principal :
+
+```python
+# qsar_project/urls.py
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('qsar_app.urls')),
+]
+```
+
+---
+
+## 5️⃣ Lancer le serveur
+
+```bash
+python manage.py runserver
+```
+
+Va sur [http://127.0.0.1:8000](http://127.0.0.1:8000) et tu peux **tester ton modèle via une interface HTML Django** 🎉
+
+---
+
+## 📦 Astuce pour organisation
+
+* Garde `Model_Entrainer.h5` et `Model_Entrainer.pkl` dans le dossier racine ou `qsar_app/`.
+* Tu peux aussi ajouter un bouton pour **téléverser un CSV**, si tu veux tester des fichiers entiers.
+
+---
+
+Souhaites-tu maintenant que je t’aide à ajouter un **formulaire pour charger un fichier CSV** et afficher les résultats ligne par ligne dans la page web ?
