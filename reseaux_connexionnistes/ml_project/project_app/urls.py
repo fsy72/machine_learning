@@ -10,7 +10,6 @@ urlpatterns = [
     # Page principale
     path('', views.index, name='index'),
     path('home/', views.index, name='home'),
-    path('toxicity/', views.formulaire_view, name='toxicity_form'),
     
     # Génération d'images (graphiques)
     path('confusion-matrix.png', views.confusion_png, name='confusion_matrix_png'),
@@ -21,6 +20,7 @@ urlpatterns = [
     # APIs pour l'entraînement et le test
     path('api/train/', views.train_model_api, name='train_model_api'),
     path('api/test/', views.test_model_api, name='test_model_api'),
+    path('api/predict/', views.predict_api, name='predict_api'),
     
     # URLs alternatives (optionnelles)
     path('matrix/', views.confusion_png, name='confusion_matrix'),

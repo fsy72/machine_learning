@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from keras.models import load_model
 import joblib
 import numpy as np
@@ -151,36 +152,91 @@ def test_model():
         traceback.print_exc()
         return False, None, None
 
-def formulaire_view(request):
+def predict_api(request):
     if request.method == 'POST':
         model, scaler = load_trained_model()
         if model is None or scaler is None:
             return render(request, "index.html", {"error": "Erreur de chargement du modèle"})
         
-        form = ToxicityForm(request.POST)
-        if form.is_valid():
-            # Récupérer les données nettoyées
-            cic0 = form.cleaned_data['cic0']
-            sm1_dz = form.cleaned_data['sm1_dz']
-            gats1i = form.cleaned_data['gats1i']
-            ndsch = form.cleaned_data['ndsch']
-            ndssc = form.cleaned_data['ndssc']
-            mlogp = form.cleaned_data['mlogp']
+        try:
+
+            # features = [
+            #     float(request.POST.get('cico')),
+            #     float(request.POST.get('sm1_dz')),
+            #     float(request.POST.get('gats1i')),
+            #     float(request.POST.get('ndsch')),
+            #     float(request.POST.get('ndssc')),
+            #     float(request.POST.get('mlogp'))
+            # ]
+
+            form = ToxicityForm(request.POST or None)
+            if form.is_valid():
+                features = [
+                    form.cleaned_data['cico'],
+                    form.cleaned_data['sm1_dz'],
+                    form.cleaned_data['gats1i'],
+                    form.cleaned_data['ndsch'],
+                    form.cleaned_data['ndssc'],
+                    form.cleaned_data['mlogp'],
+                ]
+
+                X = np.array([features])
+                X_scaled = scaler.transform(X)
+                proba = model.predict(X_scaled)[0][0]
+                prediction = "Toxique" if proba >= 0.5 else "Non toxique"
+                confidence = round(float(proba), 2)*100
+
+                return JsonResponse({
+                    'prediction': prediction,
+                    'confidence': confidence,
+                })
+            else:
+                form = ToxicityForm()
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+    return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
+
+# def formulaire_view(request):
+#     result = None
+        
+#     if request.method == 'POST':
+#         model, scaler = load_trained_model()
+#         if model is None or scaler is None:
+#             return render(request, "index.html", {"error": "Erreur de chargement du modèle"})
+        
+#         form = ToxicityForm(request.POST or None)
+#         if form.is_valid():
+#             # Récupérer les données nettoyées
+#             features = [
+#                 form.cleaned_data['cico'],
+#                 form.cleaned_data['sm1_dz'],
+#                 form.cleaned_data['gats1i'],
+#                 form.cleaned_data['ndsch'],
+#                 form.cleaned_data['ndssc'],
+#                 form.cleaned_data['mlogp'],
+#             ]
             
-            # Correction : transformer en array 2D
-            X = np.array([[cic0, sm1_dz, gats1i, ndsch, ndssc, mlogp]])
-            X_scaled = scaler.transform(X)
-            prediction = model.predict(X_scaled)[0][0]
+#             # Correction : transformer en array 2D
+#             X = np.array([features])
+#             X_scaled = scaler.transform(X)
+#             prediction = model.predict(X_scaled)[0][0]
+
+#             seuil = 0.5
+
+#             classe = "Toxique" if prediction >= seuil else "Non toxique"
+#             score  = round(float(prediction), 2)
             
-            result = {
-                "classe": "Toxique" if prediction <= 3.5 else "Non toxique",
-                "score": round(float(prediction), 2)
-            }
-            return render(request, "index.html", {"result": result, "form": form})
-    else:
-        form = ToxicityForm()
+#             result = {
+#                 'classe': classe,
+#                 'score':  score
+#             }
+#             return render(request, "index.html", {"result": result, "form": form})
+#     else:
+#         form = ToxicityForm()
     
-    return render(request, 'index.html', {'form': form})
+#     return render(request, 'index.html', {'form': form})
 
 def save_classification_results(cm, report_dict, report_text, class_names, dir_images):
     """Sauvegarder tous les résultats de classification"""

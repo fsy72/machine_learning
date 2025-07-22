@@ -552,107 +552,52 @@
         <!-- Formulaire de prédiction -->
         <div class="prediction-form">
             <h2>
-                <div class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                        fill="#8b5cf6">
-                        <path
-                            d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-197q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z" />
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px" fill="#1f1f1f">
+                        <path d="m358-488-97-96 42-42 54 54 100-100 42 42-141 142Zm426 368L532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
                     </svg>
                 </div>
                 Prédiction de Toxicité
             </h2>
-
             <form id="predictionForm" method="post">
                 {% csrf_token %}
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="cico">
-                            <div class="icon icon-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
-                                    width="20px" fill="#4a5568">
-                                    <path
-                                        d="M240-80q-50 0-85-35t-35-85v-120h120v-560l60-80 60 80v560h120v120q0 50-35 85t-85 35H240Zm480-240v-160q0-50-35-85t-85-35h-80v-280l-40-53 40-67 60 80h80q83 0 141.5 58.5T840-720v160q0 50-35 85t-85 35Z" />
-                                </svg>
-                            </div>
-                            CIC0
+                            CICO (Complexité structurelle)
                         </label>
-                        <input type="text" id="cico" name="cico" placeholder="Ex: Saumon, Thon, Morue..." required
+                        <input type="text" id="cico" name="cico" placeholder="Ex: 3.036" required
                             title="Indice d'information complémentaire d'ordre 0. Mesure la complexité structurelle de la molécule basée sur la distribution des atomes et de leurs connexions. Plus la valeur est élevée, plus la structure moléculaire est complexe et diverse.">
                     </div>
 
                     <div class="form-group">
-                        <label for="sm1_dz">
-                            <div class="icon icon-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
-                                    width="20px" fill="#4a5568">
-                                    <path
-                                        d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z" />
-                                </svg>
-                            </div>
-                            SM1_Dz(Z)
-                        </label>
-                        <input type="text" id="sm1_dz" name="sm1_dz" placeholder="Ex: Atlantique Nord, Méditerranée..."
+                        <label for="sm1_dz">SM1_Dz(Z) (Distribution spatiale)</label>
+                        <input type="text" id="sm1_dz" name="sm1_dz" placeholder="Ex: 0.405"
                             required
                             title="Premier moment spectral de la matrice de distance topologique pondérée par le numéro atomique (Z). Cet indice caractérise la distribution spatiale des atomes dans la molécule en tenant compte de leur masse atomique et de leurs distances topologiques.">
                     </div>
 
                     <div class="form-group">
-                        <label for="gats1i">
-                            <div class="icon icon-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
-                                    width="20px" fill="#4a5568">
-                                    <path
-                                        d="M200-120v-80h560v80H200Zm40-120q-17 0-28.5-11.5T200-280v-160q0-83 58.5-141.5T400-640h160q83 0 141.5 58.5T760-440v160q0 17-11.5 28.5T720-240H240Zm40-80h400v-120q0-50-35-85t-85-35H400q-50 0-85 35t-35 85v120Z" />
-                                </svg>
-                            </div>
-                            GATS1i
-                        </label>
-                        <input type="text" id="gats1i" name="gats1i" placeholder="Ex: 2.5" required
+                        <label for="gats1i">GATS1i (Autocorrélation)</label>
+                        <input type="text" id="gats1i" name="gats1i" placeholder="Ex: 1.205" required
                             title="Autocorrélation de Geary de lag 1 pondérée par le potentiel d'ionisation. Mesure la corrélation spatiale entre atomes voisins en fonction de leur potentiel d'ionisation. Indique l'homogénéité ou l'hétérogénéité de la distribution électronique dans la molécule.">
                     </div>
 
                     <div class="form-group">
-                        <label for="ndsch">
-                            <div class="icon icon-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
-                                    width="20px" fill="#4a5568">
-                                    <path
-                                        d="M280-280h400v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Z" />
-                                </svg>
-                            </div>
-                            NdsCH
-                        </label>
-                        <input type="text" id="ndsch" name="ndsch" placeholder="Ex: 3" required
-                            title="Nombre de groupes dsCH (carbones doublement liés à un autre carbone et simplement liés à un hydrogène). Compte les fragments structuraux spécifiques de type =CH- présents dans la molécule, importants pour déterminer les propriétés chimiques.">
+                        <label for="ndsch">NdsCH (Carbones)</label>
+                                <input type="text" id="ndsch" name="ndsch" placeholder="Ex: 1" required
+                                    title="Nombre de groupes dsCH (carbones doublement liés à un autre carbone et simplement liés à un hydrogène). Compte les fragments structuraux spécifiques de type =CH- présents dans la molécule, importants pour déterminer les propriétés chimiques.">
                     </div>
 
                     <div class="form-group">
-                        <label for="ndssc">
-                            <div class="icon icon-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
-                                    width="20px" fill="#4a5568">
-                                    <path
-                                        d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Z" />
-                                </svg>
-                            </div>
-                            NdssC
-                        </label>
-                        <input type="text" id="ndssc" name="ndssc" placeholder="Ex: 3" required
+                        <label for="ndssc">NdssC</label>
+                        <input type="text" id="ndssc" name="ndssc" placeholder="Ex: 0" required
                             title="Nombre d'atomes de carbone dssC (carbones doublement liés à deux autres atomes). Compte les carbones impliqués dans des doubles liaisons, généralement de type =C< dans des structures aromatiques ou alcéniques.">
                     </div>
 
                     <div class="form-group">
-                        <label for="mlogp">
-                            <div class="icon icon-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960"
-                                    width="20px" fill="#4a5568">
-                                    <path
-                                        d="M480-120q-75 0-127.5-52.5T300-300q0-48 24-90.5t66-68.5v-181q0-58 41-99t99-41q58 0 99 41t41 99v181q42 26 66 68.5t24 90.5q0 75-52.5 127.5T480-120Zm-40-440h80v-80q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640v80Z" />
-                                </svg>
-                            </div>
-                            MLOGP
-                        </label>
-                        <input type="text" id="mlogp" name="mlogp" placeholder="Ex: 15.2" required
+                        <label for="mlogp">MLOGP (Coefficient de partage)</label>
+                        <input type="text" id="mlogp" name="mlogp" placeholder="Ex: 1.807" required
                             title="Coefficient de partage octanol-eau calculé selon la méthode de Moriguchi. Mesure la lipophilie de la molécule (tendance à se dissoudre dans les graisses vs l'eau). Valeur positive = lipophile, valeur négative = hydrophile. Crucial pour prédire la bioaccumulation et la toxicité.">
                     </div>
 
@@ -672,10 +617,8 @@
                 <div style="text-align: center;">
                     <button type="submit" class="button predict" id="predictBtn">
                         <div class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                                fill="white">
-                                <path
-                                    d="m354-287 126-76 126 76-33-144 111-96-146-13-58-136-58 136-146 13 111 96-33 144ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-350Z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
+                                <path d="m354-287 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm457-560 21-89-71-59 94-8 36-84 36 84 94 8-71 59 21 89-80-47-80 47ZM480-481Z"/>
                             </svg>
                         </div>
                         <span>Analyser la Toxicité</span>
@@ -684,35 +627,13 @@
 
                 <div id="predictionResult" class="prediction-result">
                     <div class="icon" style="width: 2rem; height: 2rem; margin: 0 auto 1rem;">
-                        <svg id="resultIcon" xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960"
-                            width="32px">
+                        <svg id="resultIcon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
                         </svg>
                     </div>
                     <div id="resultText"></div>
                     <div id="resultConfidence" style="font-size: 0.9rem; opacity: 0.8; margin-top: 0.5rem;"></div>
                 </div>
             </form>
-            {% if result %}
-            <div
-                class="result-box {% if result.classe == 'Toxique' %}result-toxique{% else %}result-non-toxique{% endif %}">
-                <h3>
-                    {% if result.classe == 'Toxique' %}
-                    ⚠️ Substance Toxique
-                    {% else %}
-                    ✅ Substance Non Toxique
-                    {% endif %}
-                </h3>
-                <p><strong>Classification:</strong> {{ result.classe }}</p>
-                <p><strong>Score de toxicité:</strong> {{ result.score }}</p>
-                <small>
-                    {% if result.classe == 'Toxique' %}
-                    Score ≤ 3.5 : La substance présente des risques de toxicité
-                    {% else %}
-                    Score > 3.5 : La substance est considérée comme non toxique
-                    {% endif %}
-                </small>
-            </div>
-            {% endif %}
         </div>
 
         <!-- Boutons d'action -->
@@ -879,108 +800,23 @@
             }
         }
 
-        // Fonction de prédiction
-        async function predictToxicity(event) {
-            event.preventDefault();
-
-            setButtonLoading('predictBtn', true);
-
-            showStatus('Analyse en cours... Évaluation de la toxicité.', 'info');
-
-            // Récupérer les données du formulaire
-            const formData = {
-                cic0: parseFloat(document.getElementById('cic0').value.trim()),
-                sm1_dz: parseFloat(document.getElementById('sm1_dz').value.trim()),
-                gats1i: parseFloat(document.getElementById('gats1i').value.trim()),
-                ndsch: parseFloat(document.getElementById('ndsch').value.trim()),
-                ndssc: parseInt(document.getElementById('ndssc').value.trim()),
-                mlogp: parseFloat(document.getElementById('mlogp').value.trim())
-            };
-
-            // Validation basique
-            if (!formData.species || !formData.location || isNaN(formData.weight) ||
-                isNaN(formData.length) || isNaN(formData.age) || isNaN(formData.temperature)) {
-                showStatus('Veuillez remplir tous les champs correctement.', 'warning');
-                setButtonLoading('predictBtn', false);
-                return;
-            }
-
-            try {
-                const response = await fetch('/toxicity', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                displayPredictionResult(data);
-
-                
-
-            } catch (error) {
-                showStatus('Erreur lors de la prédiction: ' + error.message, 'error');
-            } finally {
-                setButtonLoading('predictBtn', false);
-            }
-        }
-
-        // Simulation de prédiction (remplacez par votre vraie API)
-        async function simulatePrediction(data) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    // Logique simplifiée de prédiction basée sur les données
-                    let toxicityScore = 0;
-
-                    // Facteurs de risque simulés
-                    const riskySpecies = ['thon', 'requin', 'espadon', 'marlin'];
-                    const riskyLocations = ['pacifique', 'industriel', 'pollué'];
-
-                    if (riskySpecies.some(species => data.species.toLowerCase().includes(species))) {
-                        toxicityScore += 0.3;
-                    }
-
-                    if (riskyLocations.some(location => data.location.toLowerCase().includes(location))) {
-                        toxicityScore += 0.2;
-                    }
-
-                    if (data.weight > 10) toxicityScore += 0.1;
-                    if (data.age > 5) toxicityScore += 0.1;
-                    if (data.length > 100) toxicityScore += 0.1;
-                    if (data.temperature < 5 || data.temperature > 25) toxicityScore += 0.1;
-
-                    // Ajouter un peu d'aléatoire pour simuler l'incertitude du modèle
-                    toxicityScore += (Math.random() - 0.5) * 0.2;
-                    toxicityScore = Math.max(0, Math.min(1, toxicityScore));
-
-                    const isToxic = toxicityScore > 0.5;
-                    const confidence = Math.round((isToxic ? toxicityScore : (1 - toxicityScore)) * 100);
-
-                    resolve({
-                        isToxic,
-                        confidence,
-                        toxicityScore: Math.round(toxicityScore * 100)
-                    });
-                }, 2000); // Simulation d'un délai de traitement
-            });
-        }
-
         function displayPredictionResult(result) {
             const resultDiv = document.getElementById('predictionResult');
             const resultIcon = document.getElementById('resultIcon');
             const resultText = document.getElementById('resultText');
             const resultConfidence = document.getElementById('resultConfidence');
 
-            if (result.classe === "Toxique") {
+            if (result.prediction === "Toxique") {
                 resultDiv.className = 'prediction-result prediction-toxic';
-                resultIcon.innerHTML = `<path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-197q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm-40-320h80v-240h-80v240Zm0 120h80v-80h-80v80Z"/>`;
-                resultText.innerHTML = `⚠️ <strong>POISSON POTENTIELLEMENT TOXIQUE</strong><br>Consommation déconseillée`;
-                resultConfidence.textContent = `Niveau de toxicité: ${result.toxicityScore}% | Confiance: ${result.confidence}%`;
+                resultIcon.innerHTML = `<path d="m40-120 440-760 440 760H40Zm138-80h604L480-720 178-200Zm302-40q17 0 28.5-11.5T520-280q0-17-11.5-28.5T480-320q-17 0-28.5 11.5T440-280q0 17 11.5 28.5T480-240Zm-40-120h80v-200h-80v200Zm40-100Z"/>`;
+                resultText.innerHTML = `<strong>POISSON POTENTIELLEMENT TOXIQUE</strong><br>Consommation déconseillée`;
+                resultConfidence.textContent = `Niveau de toxicité: ${result.confidence}%`;
                 showStatus('Attention! Le poisson analysé présente des risques de toxicité.', 'warning');
             } else {
                 resultDiv.className = 'prediction-result prediction-safe';
-                resultIcon.innerHTML = `<path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-197q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-43-61 227-225-45-41-182 180-95-99-46 45 141 140Z"/>`;
-                resultText.innerHTML = `✅ <strong>POISSON SÉCURISÉ</strong><br>Consommation recommandée`;
-                resultConfidence.textContent = `Niveau de sécurité: ${100 - result.toxicityScore}% | Confiance: ${result.confidence}%`;
+                resultIcon.innerHTML = `<path d="m424-296 282-282-56-56-226 226-114-114-56 56 170 170Zm56 216q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>`;
+                resultText.innerHTML = `<strong>POISSON SÉCURISÉ</strong><br>Consommation recommandée`;
+                resultConfidence.textContent = `Niveau de sécurité: ${result.confidence}%`;
                 showStatus('Excellente nouvelle! Le poisson analysé est sûr pour la consommation.', 'success');
             }
 
@@ -1082,8 +918,48 @@
         // Event listeners
         document.addEventListener('DOMContentLoaded', function () {
             // Formulaire de prédiction
-            // document.getElementById('predictionForm').addEventListener('submit', predictToxicity);
 
+            document.getElementById('predictionForm').addEventListener('submit', function (event) {
+                event.preventDefault();  // Empêche le rechargement de la page
+
+                const formData = new FormData(this);
+
+                fetch('/api/predict/', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')  // Django a besoin du token CSRF
+                    },
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error ${response.status}`);
+                        }
+                        return response.json()
+                    })
+                    .then(data => { displayPredictionResult(data); })
+                    .catch(error => {
+                        alert("Erreur lors de la prédiction !");
+                        console.error('Erreur:', error);
+                    });
+            });
+
+            // Récupère le token CSRF depuis les cookies
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let cookie of cookies) {
+                        cookie = cookie.trim();
+                        if (cookie.startsWith(name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
 
             // Animation d'entrée pour les cartes
             const cards = document.querySelectorAll('.chart-card, .prediction-form');
